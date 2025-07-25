@@ -1,8 +1,0 @@
-name: MinecartAnnouncer
-version: 1.2.2
-main: com.warterpl.minecartannoucer.MinecartAnnouncer
-api-version: 1.21.5
-commands:
-  showRailMessages:
-    description: Can display messages while traveling via minecart
-    usage: showRailMessages
