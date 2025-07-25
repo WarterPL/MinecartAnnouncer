@@ -40,3 +40,7 @@ If you place bone block underneath rail from which incoming person will be trave
 ![Example prepared message](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/example_message.png)
 
 ![Example player screen when running](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/example_playerscreen.png)
+
+# Changelog
+## 1.2.3
+- Fixed Issues: 0001, 0002
