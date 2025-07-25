@@ -1,4 +1,4 @@
-package com.warterpl.minecartannoucer.rails;
+package com.warterpl.minecartannoucer;
 
 import com.google.gson.*;
 import com.google.gson.JsonArray;

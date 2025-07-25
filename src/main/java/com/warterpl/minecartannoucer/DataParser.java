@@ -1,8 +1,6 @@
 package com.warterpl.minecartannoucer;
 
 import com.warterpl.helper.Pair;
-import com.warterpl.minecartannoucer.rails.MessageDisplayer;
-import com.warterpl.minecartannoucer.BossbarSettings;
 import org.bukkit.boss.BarColor;
 
 public class DataParser {

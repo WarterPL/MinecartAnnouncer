@@ -1,7 +1,6 @@
-package com.warterpl.minecartannoucer.rails;
+package com.warterpl.minecartannoucer;
 
 import com.warterpl.helper.Pair;
-import com.warterpl.minecartannoucer.MinecartAnnouncer;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Minecart;
@@ -11,52 +10,22 @@ import org.bukkit.boss.*;
 import org.bukkit.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import com.warterpl.minecartannoucer.DataParser;
-import com.warterpl.minecartannoucer.BossbarSettings;
 
 public class MessageDisplayer {
 
+    public void SendMessage(Player player, List<String> messages)
+    {
+        if (player == null || messages == null || messages.isEmpty()) return;
 
-    private final Map<Player, Block> previousPlayerRail = new HashMap<>();
-
-    public void SendMessage(Minecart minecart) {
-        Player player = (Player) minecart.getPassengers().get(0);
-
-        if (player != null) {
-            Block minecartBlock = minecart.getLocation().getBlock().getRelative(0, 0, 0);
-
-            boolean directional = (minecartBlock.getRelative(-1, -1, 0).getType() == Material.BONE_BLOCK ||
-                    minecartBlock.getRelative(1, -1, 0).getType() == Material.BONE_BLOCK ||
-                    minecartBlock.getRelative(0, -1, -1).getType() == Material.BONE_BLOCK ||
-                    minecartBlock.getRelative(0, -1, 1).getType() == Material.BONE_BLOCK
-            );
-
-            Block previousRail = previousPlayerRail.get(player);
-
-            if (MinecartAnnouncer.railMessages.containsKey(minecartBlock)) {
-                HandlePage(directional, previousRail, minecartBlock, player);
-            }
-            previousPlayerRail.put(player, minecartBlock);
-        }
+        HandlePage(player, messages);
     }
 
-    void HandlePage(boolean directional, Block previousRail, Block minecartBlock, Player player) {
-        if (previousRail == null)
-            return;
-
-        boolean repeating = previousRail.equals(minecartBlock);
-        boolean directionalCondition = previousRail.getRelative(0, -1, 0).getType() == Material.BONE_BLOCK;
-
-
-        if ((directional && !directionalCondition) || repeating) return;
+    void HandlePage(Player player, List<String> messages)
+    {
         StringBuilder message = new StringBuilder();
         List<Pair<String, String>> titleCards = new ArrayList<>();
         List<BossbarSettings> bossbarCards = new ArrayList<>();
-
-        List<String> messages = MinecartAnnouncer.railMessages.get(minecartBlock);
 
         boolean isFirstUndefinedPage = true;
 
@@ -80,6 +49,17 @@ public class MessageDisplayer {
         sendNonEmptyMessage(player, message.toString());
         HandleTitlePages(titleCards, player);
         HandleBossbars(bossbarCards, player);
+    }
+    @Deprecated(since = "NOW", forRemoval = true)
+    void HandlePage(boolean directional, Block previousRail, Block minecartBlock, Player player) {
+        if (previousRail == null)
+            return;
+
+        boolean repeating = previousRail.equals(minecartBlock);
+        boolean directionalCondition = previousRail.getRelative(0, -1, 0).getType() == Config.DirectionaRailMat;
+
+
+        if ((directional && !directionalCondition) || repeating) return;
     }
     void sendNonEmptyMessage(Player player, String message) {
         if (message != null && !message.trim().isEmpty()) {
