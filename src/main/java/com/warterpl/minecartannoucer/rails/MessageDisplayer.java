@@ -14,31 +14,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.warterpl.minecartannoucer.DataParser;
+import com.warterpl.minecartannoucer.BossbarSettings;
 
-public class MessageDisplayer
-{
-    class BossbarSettings
-    {
-        public final String name;
-        public final BarColor color;
-        public final int duration;
-        public BossbarSettings(String name, BarColor color, int duration)
-        {
-            this.name = name;
-            this.color = color;
-            this.duration = duration;
-        }
-    }
+public class MessageDisplayer {
+
+
     private final Map<Player, Block> previousPlayerRail = new HashMap<>();
-    final char definitionCharacter = '#';
-    final String titlePageDefinition = definitionCharacter + "DEF:TITLE" + definitionCharacter;
-    final String subtitleDefinition = definitionCharacter + "DEF:SUBTITLE" + definitionCharacter;
-    final String bossbarDefinition = definitionCharacter + "DEF:BOSSBAR" + definitionCharacter;
-    final String bossbarColorDefinition = definitionCharacter + "DEF:BB_COLOR-";
-    final String bossbarDurationDefinition = definitionCharacter + "DEF:BB_DUR-";
-    final String bossbarRgxTimeLeftDefinition = "#GET:BB_TIME#";
-    public void SendMessage(Minecart minecart)
-    {
+
+    public void SendMessage(Minecart minecart) {
         Player player = (Player) minecart.getPassengers().get(0);
 
         if (player != null) {
@@ -58,16 +42,16 @@ public class MessageDisplayer
             previousPlayerRail.put(player, minecartBlock);
         }
     }
-    void HandlePage(boolean directional, Block previousRail, Block minecartBlock, Player player)
-    {
-        if(previousRail == null)
+
+    void HandlePage(boolean directional, Block previousRail, Block minecartBlock, Player player) {
+        if (previousRail == null)
             return;
 
         boolean repeating = previousRail.equals(minecartBlock);
         boolean directionalCondition = previousRail.getRelative(0, -1, 0).getType() == Material.BONE_BLOCK;
 
 
-        if((directional && !directionalCondition) || repeating) return;
+        if ((directional && !directionalCondition) || repeating) return;
         StringBuilder message = new StringBuilder();
         List<Pair<String, String>> titleCards = new ArrayList<>();
         List<BossbarSettings> bossbarCards = new ArrayList<>();
@@ -76,121 +60,31 @@ public class MessageDisplayer
 
         boolean isFirstUndefinedPage = true;
 
-        for(String s : messages)
-        {
-            if(!s.equals(messages.getFirst()) &&
-                !s.startsWith(titlePageDefinition) &&
-                !s.startsWith(bossbarDefinition) &&
-                !isFirstUndefinedPage)
-                    message.append("\n§r");
+        for (String s : messages) {
+            if (!s.equals(messages.getFirst()) &&
+                    !s.startsWith(DataParser.TitlePageDef) &&
+                    !s.startsWith(DataParser.BossbarDef) &&
+                    !isFirstUndefinedPage)
+                message.append("\n§r");
 
-            if(s.startsWith(titlePageDefinition)){
-                int subtitlePos = s.indexOf(subtitleDefinition);
-                if(subtitlePos != -1)
-                    titleCards.add(new Pair<>(
-                        s.substring(titlePageDefinition.length(), subtitlePos),
-                        s.substring(subtitlePos + subtitleDefinition.length())
-                    ));
-                else
-                    titleCards.add(new Pair<>(s.substring(12), ""));
-            }
-            else if(s.startsWith(bossbarDefinition))
-            {
-                String bossbarInfo = s.substring(bossbarDefinition.length());
-                BarColor barColor;
-                int duration;
-                Pair<String, BarColor> extractedColor = ExtractBossbarColor(bossbarInfo);
-                bossbarInfo = extractedColor.first;
-                barColor = extractedColor.second;
-                Pair<String, Integer> extractedDuration = ExtractIntegerParam(bossbarInfo, bossbarDurationDefinition);
-                bossbarInfo = extractedDuration.first;
-                duration = extractedDuration.second;
-                bossbarCards.add(new BossbarSettings(bossbarInfo, barColor, duration));
-            }
-            else if(!s.isEmpty())
-            {
+            if (s.startsWith(DataParser.TitlePageDef))
+                titleCards.add(DataParser.ParseTitlePage(s));
+            else if (s.startsWith(DataParser.BossbarDef))
+                bossbarCards.add(DataParser.ParseBossbarPage(s));
+            else if (!s.isEmpty()) {
                 message.append(s);
                 isFirstUndefinedPage = false;
             }
         }
 
-        player.sendMessage(message.toString());
+        sendNonEmptyMessage(player, message.toString());
         HandleTitlePages(titleCards, player);
         HandleBossbars(bossbarCards, player);
     }
-    Pair<String, Integer> ExtractIntegerParam(String bossbarInfo, String argument)
-    {
-        int intParam = 10;
-        int durationPos = bossbarInfo.indexOf(argument);
-        if(durationPos == -1)
-            return new Pair<>(bossbarInfo, intParam);
-
-        int endDurationPos = bossbarInfo.indexOf(definitionCharacter, durationPos+1);
-        if(endDurationPos == -1)
-        {
-            bossbarInfo = bossbarInfo.substring(0, durationPos)
-                    + bossbarInfo.substring(durationPos + argument.length());
-            return new Pair<>(bossbarInfo, intParam);
+    void sendNonEmptyMessage(Player player, String message) {
+        if (message != null && !message.trim().isEmpty()) {
+            player.sendMessage(message);
         }
-
-        String durationString = bossbarInfo.substring(durationPos + argument.length(), endDurationPos);
-        try
-        {
-            intParam = Integer.parseInt(durationString);
-            intParam = Math.abs(intParam);
-        }
-        catch (Exception e)
-        {  }
-
-        bossbarInfo = bossbarInfo.substring(0, durationPos)
-                + bossbarInfo.substring(endDurationPos+1);
-
-        return new Pair<>(bossbarInfo, intParam);
-    }
-    Pair<String, BarColor> ExtractBossbarColor(String bossbarInfo)
-    {
-        BarColor barColor;
-        int colorPos = bossbarInfo.indexOf(bossbarColorDefinition);
-        if(colorPos == -1)
-            return new Pair<>(bossbarInfo, BarColor.WHITE);
-
-        int endColorPos = bossbarInfo.indexOf(definitionCharacter, colorPos+1);
-        if(endColorPos == -1)
-        {
-            barColor = BarColor.WHITE;
-            bossbarInfo = bossbarInfo.substring(0, colorPos)
-                    + bossbarInfo.substring(colorPos + bossbarColorDefinition.length());
-            return new Pair<>(bossbarInfo, barColor);
-        }
-
-        switch (bossbarInfo.substring(colorPos + bossbarColorDefinition.length(), endColorPos))
-        {
-            case "RED":
-                barColor = BarColor.RED;
-                break;
-            case "BLUE":
-                barColor = BarColor.BLUE;
-                break;
-            case "PINK":
-                barColor = BarColor.PINK;
-                break;
-            case "GREEN":
-                barColor = BarColor.GREEN;
-                break;
-            case "YELLOW":
-                barColor = BarColor.YELLOW;
-                break;
-            case "PURPLE":
-                barColor = BarColor.PURPLE;
-                break;
-            default:
-                barColor = BarColor.WHITE;
-                break;
-            }
-        bossbarInfo = bossbarInfo.substring(0, colorPos)
-                + bossbarInfo.substring(endColorPos+1);
-
-        return new Pair<String, BarColor>(bossbarInfo, barColor);
     }
     void HandleTitlePages(List<Pair<String, String>> titleCards, Player player)
     {
@@ -216,7 +110,6 @@ public class MessageDisplayer
 
     void HandleBossbars(List<BossbarSettings> bossbars, Player player) {
         if (bossbars.isEmpty()) return;
-
         displayNextBossbar(bossbars, player, 0);
     }
 
@@ -224,7 +117,7 @@ public class MessageDisplayer
         if (index >= bossbars.size()) return;
 
         BossbarSettings settings = bossbars.get(index);
-        String text = settings.name.replaceAll(bossbarRgxTimeLeftDefinition, Integer.toString(settings.duration));
+        String text = settings.name.replaceAll(DataParser.BossbarRgxTimeLeftDef, Integer.toString(settings.duration));
         BossBar bossBar = Bukkit.createBossBar(text, settings.color, BarStyle.SOLID);
         bossBar.addPlayer(player);
 
@@ -238,7 +131,7 @@ public class MessageDisplayer
                     cancel();
                     displayNextBossbar(bossbars, player, index + 1);
                 } else {
-                    bossBar.setTitle(settings.name.replaceAll(bossbarRgxTimeLeftDefinition, Integer.toString(timeLeft)));
+                    bossBar.setTitle(settings.name.replaceAll(DataParser.BossbarRgxTimeLeftDef, Integer.toString(timeLeft)));
                     double progress = (double) timeLeft / settings.duration;
                     bossBar.setProgress(progress);
                     timeLeft--;

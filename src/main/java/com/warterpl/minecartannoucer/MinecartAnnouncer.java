@@ -3,6 +3,7 @@ package com.warterpl.minecartannoucer;
 import com.warterpl.minecartannoucer.rails.FileHandler;
 import com.warterpl.minecartannoucer.rails.MessageDisplayer;
 import org.bukkit.Material;
+import org.bukkit.entity.Boat;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -36,23 +37,14 @@ public class MinecartAnnouncer extends JavaPlugin implements Listener {
         messageDisplayer = new MessageDisplayer();
     }
 
-    @Override
-    public void onEnable() {
-        if (!getDataFolder().exists()) {
-            getDataFolder().mkdirs();
+    @EventHandler
+    public void onVehicleMove(VehicleMoveEvent event) {
+        if (event.getVehicle() instanceof Minecart minecart) {
+            if (!minecart.getPassengers().isEmpty()) {
+                messageDisplayer.SendMessage(minecart);
+            }
         }
-        getServer().getPluginManager().registerEvents(this, this);
-
-        FileHandler.SetupFile();
-        railMessages = FileHandler.loadRailMessages();
     }
-
-    @Override
-    public void onDisable() {
-        FileHandler.saveRailMessages(railMessages);
-    }
-
-
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
 
@@ -107,16 +99,6 @@ public class MinecartAnnouncer extends JavaPlugin implements Listener {
         }
     }
 
-
-    @EventHandler
-    public void onMinecartMove(VehicleMoveEvent event) {
-        if (event.getVehicle() instanceof Minecart minecart) {
-            if (!minecart.getPassengers().isEmpty()) {
-                messageDisplayer.SendMessage(minecart);
-            }
-        }
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("showRailMessages")) {
@@ -138,5 +120,20 @@ public class MinecartAnnouncer extends JavaPlugin implements Listener {
             return true;
         }
         return false;
+    }
+    @Override
+    public void onEnable() {
+        if (!getDataFolder().exists()) {
+            getDataFolder().mkdirs();
+        }
+        getServer().getPluginManager().registerEvents(this, this);
+
+        FileHandler.SetupFile();
+        railMessages = FileHandler.loadRailMessages();
+    }
+
+    @Override
+    public void onDisable() {
+        FileHandler.saveRailMessages(railMessages);
     }
 }

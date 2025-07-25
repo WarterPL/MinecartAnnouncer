@@ -1,5 +1,5 @@
 name: MinecartAnnouncer
-version: 1.2.2
+version: 1.2.3
 main: com.warterpl.minecartannoucer.MinecartAnnouncer
 api-version: 1.21.5
 commands:
