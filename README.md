@@ -10,16 +10,20 @@ This plugin made for private minecraft server with friends allows you to make Va
 - Support For Boats and Minecarts
 
 # Setup
-- **Minecarts**
-To create messages for travelers you need to place Iron Block under normal Rail block. ![Setup](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/Setup.png) Next you will need Writable Book (Book and Quill) to write message in it. Once you are done sign book, and leftclick with it on rail with Iron Block underneath. If done correctly you should have seen green particles and private message on chat confirming assignment. 
-- **Boats** (since 1.3)
-Place Polished Blackstone Pressure Plate on any Ice and proceed like with rails but click with Writen Book on Pressure plate
+- **Minecarts** \
+To create messages for travelers you need to place Iron Block under normal Rail block. \
+![Minecart Setup](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/Setup.png) \
+Next you will need Writable Book (Book and Quill) to write message in it. Once you are done sign book, and leftclick with it on rail with Iron Block underneath. If done correctly you should have seen green particles and private message on chat confirming assignment. 
+- **Boats** (since 1.3) \
+Place Polished Blackstone Pressure Plate on any Ice and proceed like with rails but click with Writen Book on Pressure plate \
+![Boat Setup](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/boatSetup.png) \
+*Tripwires are for directional setup, on screenshot are used Visible Tripwires resource pack from Vanilla Tweaks*
 
 ## Chat messages
 Whatever you will write in book will be send on chat for player that run over defined rail, unless written otherwise
 
 ## Colors
-You can use deafult Minecraft supported color by using color code forwarded with **$** sign.
+You can use deafult Minecraft supported color by using color code forwarded with **$** sign. \
 ![Text Formating](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/Minecraft_Formatting.webp)
 
 ## Bossbars
@@ -38,9 +42,9 @@ You can create title by defining it at the beggining of page with
 On this page you can declare second section **#DEF:SUBTITLE#**, everything after that will be shown as a subtitle underneath title
 
 ## Directional Travel Sending
-- **Minecarts**
+- **Minecarts** \
 If you place bone block underneath rail from which incoming person will be traveling. Then only playes comming from that bone block onto your message rail will see message but not when going in opposite way
-- **Boats** (since 1.3)
+- **Boats** (since 1.3)  
 Place string before pressure plate from direction player will be comming, if you are doing iceway diagonally - you will need to put two strings
 
 # Example

@@ -58,7 +58,7 @@ public class MinecartAnnouncer extends JavaPlugin implements Listener {
             if (!MinecartAnnouncer.messages.containsKey(block))
                 continue;
 
-            if(isDirectional(block, Config.DirectionalIceMat, 0))
+            if(isDirectional(block, Config.DirectionalIceMat, 0, true))
             {
                 var prevBoatPos = prevBoatLocation.get(boat);
                 if(prevBoatPos != null)
@@ -93,28 +93,22 @@ public class MinecartAnnouncer extends JavaPlugin implements Listener {
 
         double threshold = 0.5;
 
-        if (z > threshold && Math.abs(x) < threshold) {
+        if (z > threshold && Math.abs(x) < threshold)
             return block.getRelative(0, 0, -1).getType() == Config.DirectionalIceMat; // N
-        } else if (z > threshold && x > threshold) {
-            return block.getRelative(0, 0, -1).getType() == Config.DirectionalIceMat &&
-                    block.getRelative(-1, 0, 0).getType() == Config.DirectionalIceMat; // NE
-        } else if (Math.abs(z) < threshold && x > threshold) {
+        else if (z > threshold && x > threshold)
+            return block.getRelative(-1, 0, -1).getType() == Config.DirectionalIceMat; // NE
+        else if (Math.abs(z) < threshold && x > threshold)
             return block.getRelative(-1, 0, 0).getType() == Config.DirectionalIceMat; // E
-        } else if (z < -threshold && x > threshold) {
-            return block.getRelative(0, 0, 1).getType() == Config.DirectionalIceMat &&
-                    block.getRelative(-1, 0, 0).getType() == Config.DirectionalIceMat; // SE
-        } else if (z < -threshold && Math.abs(x) < threshold) {
+        else if (z < -threshold && x > threshold)
+            return block.getRelative(-1, 0, 1).getType() == Config.DirectionalIceMat;// SE
+        else if (z < -threshold && Math.abs(x) < threshold)
             return block.getRelative(0, 0, 1).getType() == Config.DirectionalIceMat; // S
-        } else if (z < -threshold && x < -threshold) {
-            return block.getRelative(0, 0, 1).getType() == Config.DirectionalIceMat &&
-                    block.getRelative(1, 0, 0).getType() == Config.DirectionalIceMat; // SW
-        } else if (Math.abs(z) < threshold && x < -threshold) {
+        else if (z < -threshold && x < -threshold)
+            return block.getRelative(1, 0, 1).getType() == Config.DirectionalIceMat; // SW
+        else if (Math.abs(z) < threshold && x < -threshold)
             return block.getRelative(1, 0, 0).getType() == Config.DirectionalIceMat; // W
-        } else if (z > threshold && x < -threshold) {
-            return block.getRelative(0, 0, -1).getType() == Config.DirectionalIceMat &&
-                    block.getRelative(1, 0, 0).getType() == Config.DirectionalIceMat; // NW
-        }
-
+        else if (z > threshold && x < -threshold)
+            return block.getRelative(1, 0, -1).getType() == Config.DirectionalIceMat; // NW
 
         return false;
     }
@@ -158,7 +152,7 @@ public class MinecartAnnouncer extends JavaPlugin implements Listener {
         if (!repeating) {
             assert previousBlock != null;
             boolean directionalCondition = previousBlock.getRelative(0, -1, 0).getType() == Config.DirectionaRailMat;
-            boolean directional = isDirectional(currentBlock, Config.DirectionaRailMat, -1);
+            boolean directional = isDirectional(currentBlock, Config.DirectionaRailMat, -1, false);
             if (!directional || directionalCondition) {
                 if (MinecartAnnouncer.messages.containsKey(currentBlock)) {
                     messageDisplayer.SendMessage(player, messages.get(currentBlock));
@@ -167,13 +161,21 @@ public class MinecartAnnouncer extends JavaPlugin implements Listener {
         }
         lastPlayerRail.put(player, currentBlock);
     }
-    private boolean isDirectional(Block block, Material checker, int yOffset)
+    private boolean isDirectional(Block block, Material checker, int yOffset, boolean is8sided)
     {
-        return (block.getRelative(-1, yOffset, 0).getType() == checker ||
+        boolean _4side = (block.getRelative(-1, yOffset, 0).getType() == checker ||
                 block.getRelative(1, yOffset, 0).getType() == checker ||
                 block.getRelative(0, yOffset, -1).getType() == checker ||
                 block.getRelative(0, yOffset, 1).getType() == checker
         );
+        if(is8sided)
+            return (_4side ||
+                block.getRelative(1, yOffset, 1).getType() == checker ||
+                block.getRelative(-1, yOffset, -1).getType() == checker ||
+                block.getRelative(1, yOffset, -1).getType() == checker ||
+                block.getRelative(-1, yOffset, 1).getType() == checker
+            );
+        return _4side;
     }
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
