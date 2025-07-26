@@ -45,7 +45,7 @@ On this page you can declare second section **#DEF:SUBTITLE#**, everything after
 - **Minecarts** \
 If you place bone block underneath rail from which incoming person will be traveling. Then only playes comming from that bone block onto your message rail will see message but not when going in opposite way
 - **Boats** (since 1.3)  
-Place string before pressure plate from direction player will be comming, if you are doing iceway diagonally - you will need to put two strings
+Place string before pressure plate from direction player will be comming including diagonally placed
 
 # Example
 ![Example prepared message](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/example_message.png)
