@@ -1,5 +1,7 @@
-package com.warterpl.minecartannoucer;
+package com.warterpl.minecartannoucer.Messages;
 
+import com.warterpl.minecartannoucer.Config;
+import com.warterpl.minecartannoucer.MinecartAnnouncer;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -22,7 +24,7 @@ public class MessageAssigner {
         BookMeta meta = (BookMeta) item.getItemMeta();
         if (meta == null || !meta.hasPages()) return;
 
-        if(MinecartAnnouncer.messages.containsKey(block))
+        if(MinecartAnnouncer.msgBlocks.contains(block))
         {
             event.getPlayer().sendMessage("This block already has a message!");
             return;
@@ -34,11 +36,34 @@ public class MessageAssigner {
                 .map(TextFormater::formatText)
                 .toList();
 
-        MinecartAnnouncer.messages.put(block, formattedMessages);
+        InsertNewEntryToDb(block, formattedMessages);
+
         event.getPlayer().sendMessage("Message has been assigned!");
 
         item.setAmount(0);
+        assert block != null;
         block.getWorld().spawnParticle(Particle.COMPOSTER, block.getLocation().add(0.5, 0, 0.5), 20);
+    }
+    private static void InsertNewEntryToDb(Block block, List<String> messages)
+    {
+        MinecartAnnouncer.msgBlocks.add(block);
+        MinecartAnnouncer.messageCache.put(MinecartAnnouncer.getBlockKey(block), messages);
+        for(int page = 0; page < messages.size(); page++)
+        {
+            MinecartAnnouncer.dbHandler.InsertMessage(
+                block.getX(),
+                block.getY(),
+                block.getZ(),
+                block.getWorld().getName(),
+                page,
+                messages.get(page)
+            );
+        }
+    }
+    private static void RemoveEntryFromDb(Block block)
+    {
+        MinecartAnnouncer.msgBlocks.remove(block);
+        MinecartAnnouncer.dbHandler.DeleteMessagesFromBlock(block);
     }
 
 
@@ -48,8 +73,8 @@ public class MessageAssigner {
                 destroyedBlock.getType() == Config.IceActivator
                 ? destroyedBlock : destroyedBlock.getRelative(0, 1, 0);
 
-        if (MinecartAnnouncer.messages.containsKey(block)) {
-            List<String> formatedMessages = MinecartAnnouncer.messages.get(block);
+        if (MinecartAnnouncer.msgBlocks.contains(block)) {
+            List<String> formatedMessages = MinecartAnnouncer.GetMessages(block);
             List<String> rawMessages = new ArrayList<>();
             for(String s : formatedMessages) rawMessages.add(TextFormater.unformatText(s));
 
@@ -61,7 +86,7 @@ public class MessageAssigner {
                 book.setItemMeta(meta);
             }
 
-            MinecartAnnouncer.messages.remove(block);
+            RemoveEntryFromDb(block);
             block.getWorld().dropItemNaturally(block.getLocation(), book);
 
             event.getPlayer().sendMessage("Message has been deleted!");

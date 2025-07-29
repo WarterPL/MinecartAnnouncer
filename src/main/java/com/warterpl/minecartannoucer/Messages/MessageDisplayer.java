@@ -1,9 +1,11 @@
-package com.warterpl.minecartannoucer;
+package com.warterpl.minecartannoucer.Messages;
 
 import com.warterpl.helper.Pair;
-import org.bukkit.Material;
+import com.warterpl.minecartannoucer.BossbarSettings;
+import com.warterpl.minecartannoucer.Config;
+import com.warterpl.minecartannoucer.Messages.DataParser;
+import com.warterpl.minecartannoucer.MinecartAnnouncer;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.boss.*;

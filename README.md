@@ -1,4 +1,4 @@
-# Minecart Announcer (1.3)
+# Minecart Announcer (2.0)
 This plugin made for private minecraft server with friends allows you to make Vanilla announcments for traveling players in minecarft
 
 # Features
@@ -14,7 +14,7 @@ This plugin made for private minecraft server with friends allows you to make Va
 To create messages for travelers you need to place Iron Block under normal Rail block. \
 ![Minecart Setup](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/Setup.png) \
 Next you will need Writable Book (Book and Quill) to write message in it. Once you are done sign book, and leftclick with it on rail with Iron Block underneath. If done correctly you should have seen green particles and private message on chat confirming assignment. 
-- **Boats** (since 1.3) \
+- **Boats** \
 Place Polished Blackstone Pressure Plate on any Ice and proceed like with rails but click with Writen Book on Pressure plate \
 ![Boat Setup](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/boatSetup.png) \
 *Tripwires are for directional setup, on screenshot are used Visible Tripwires resource pack from Vanilla Tweaks*
@@ -44,7 +44,7 @@ On this page you can declare second section **#DEF:SUBTITLE#**, everything after
 ## Directional Travel Sending
 - **Minecarts** \
 If you place bone block underneath rail from which incoming person will be traveling. Then only playes comming from that bone block onto your message rail will see message but not when going in opposite way
-- **Boats** (since 1.3)  
+- **Boats**
 Place string before pressure plate from direction player will be comming including diagonally placed
 
 # Example
@@ -53,7 +53,10 @@ Place string before pressure plate from direction player will be comming includi
 ![Example player screen when running](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/example_playerscreen.png)
 
 # Changelog
-## 1.2.3
-- Fixed Issues: 0001, 0002
+## 2.0
+- Replaced JSON save file to SQLite database
+- Fixed Issues: 0003
 ## 1.3
 - Added Boats support
+## 1.2.3
+- Fixed Issues: 0001, 0002
