@@ -1,62 +1,138 @@
-# Minecart Announcer (2.0)
-This plugin made for private minecraft server with friends allows you to make Vanilla announcments for traveling players in minecarft
+# Minecart Announcer 2.0
 
-# Features
-- Color support
-- Chat messages
-- Bossbars
-- Titles
-- Directional Travel Sending
-- Support For Boats and Minecarts
+**Minecart Announcer** is a lightweight plugin designed for private Minecraft servers. It enables vanilla-friendly announcements for players traveling via **minecarts** or **boats**.
 
-# Setup
-- **Minecarts** \
-To create messages for travelers you need to place Iron Block under normal Rail block. \
-![Minecart Setup](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/Setup.png) \
-Next you will need Writable Book (Book and Quill) to write message in it. Once you are done sign book, and leftclick with it on rail with Iron Block underneath. If done correctly you should have seen green particles and private message on chat confirming assignment. 
-- **Boats** \
-Place Polished Blackstone Pressure Plate on any Ice and proceed like with rails but click with Writen Book on Pressure plate \
-![Boat Setup](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/boatSetup.png) \
-*Tripwires are for directional setup, on screenshot are used Visible Tripwires resource pack from Vanilla Tweaks*
+---
 
-## Chat messages
-Whatever you will write in book will be send on chat for player that run over defined rail, unless written otherwise
+## Features
 
-## Colors
-You can use deafult Minecraft supported color by using color code forwarded with **$** sign. \
-![Text Formating](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/Minecraft_Formatting.webp)
+- Full color formatting support
+- Player-specific **chat messages**
+- Custom **bossbars**
+- On-screen **titles & subtitles**
+- **Directional triggering** (based on travel direction)
+- Works with **minecarts** and **boats**
+
+---
+
+## Setup Instructions
+
+### Minecarts
+
+To set up a message trigger:
+
+1. **Place a Rail on top of an Iron Block**  
+   ![Minecart Setup](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/Setup.png)
+
+2. Use a **Book and Quill** to write your message.
+
+3. Once finished, **sign the book**, then **left-click** the Rail block (with Iron Block underneath) using the signed book.
+
+If the setup is successful, you’ll see **green particles** and receive a private confirmation message in chat.
+
+---
+
+### Boats
+
+1. **Place a Polished Blackstone Pressure Plate** on any type of Ice block.  
+   ![Boat Setup](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/boatSetup.png)
+
+2. Use the same method as with minecarts: write your message in a Book and Quill, sign it, then left-click the pressure plate with the signed book.
+
+> _Note: Visible tripwires in the screenshot are from the **Vanilla Tweaks** resource pack and used for directional control._
+
+---
+
+## Chat Messages
+
+By default, the content of the book will be sent to the **chat** of the player who triggered it.  
+If you use special tags (see below), it will display as a bossbar or title instead.
+
+---
+
+## Color Formatting
+
+You can use **Minecraft’s default color codes**, prefixed with a **`$`** (dollar sign).
+
+Example: `$cWarning!` → displays as red text  
+![Text Formatting](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/Minecraft_Formatting.webp)
+
+---
 
 ## Bossbars
-You can create bossbar by defining it at the beggining of page with
-**#DEF:BOSSBAR#** - this will make whatever you write appear as Bossbar text.
-Bossbars have parameters that if used anywhere outside page declared at the beggining as a bossbar will be just send like normal text.
 
-***BE AWARE THAT - square brackets are used as possible parameters***
-- **#DEF:BB_COLOR-\['RED', 'BLUE', 'PINK', 'GREEN', 'YELLOW', 'PURPLE', 'WHITE'\]#** - will set color of bossbar
-- **#DEF:BB_DUR-\[integer time in seconds, default 10s\]#** - will set visibility duration of bossbar
-- **#GET:BB_TIME#** - will replace with remaining time of bossbar that is currently being shown
+To display your message as a **bossbar**, begin the page with:
 
-## Titles
-You can create title by defining it at the beggining of page with
-**#DEF:TITLE#** - this will make whatever you write next appear as title
-On this page you can declare second section **#DEF:SUBTITLE#**, everything after that will be shown as a subtitle underneath title
+```
+#DEF:BOSSBAR#
+```
 
-## Directional Travel Sending
-- **Minecarts** \
-If you place bone block underneath rail from which incoming person will be traveling. Then only playes comming from that bone block onto your message rail will see message but not when going in opposite way
-- **Boats**
-Place string before pressure plate from direction player will be comming including diagonally placed
+Optional bossbar parameters (must be placed **anywhere** on the same page):
 
-# Example
+- `#DEF:BB_COLOR-[RED|BLUE|PINK|GREEN|YELLOW|PURPLE|WHITE]#`  
+  → Sets the bossbar color
+
+- `#DEF:BB_DUR-[seconds]#`  
+  → Sets the bossbar duration (in seconds, default: 10)
+
+- `#GET:BB_TIME#`  
+  → Replaced in the message with remaining bossbar time
+
+---
+
+## Titles & Subtitles
+
+To show your message as an **on-screen title**, start with:
+
+```
+#DEF:TITLE#
+```
+
+Then, for a subtitle (optional), include:
+
+```
+#DEF:SUBTITLE#
+```
+
+Everything after that line will be shown as a subtitle below the title.
+
+---
+
+## Directional Triggering
+
+### Minecarts
+
+To make the message trigger **only when approaching from a specific direction**:
+
+- Place a **Bone Block** beneath the previous Rail (from which the player will be coming).  
+  Only players entering from that direction will see the message.
+
+### Boats
+
+- Place **String (Tripwire)** in the direction the player will approach from (including diagonals).  
+  This ensures that players coming from the correct path trigger the pressure plate message.
+
+---
+
+## Example
+
+**Setup:**  
 ![Example prepared message](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/example_message.png)
 
+**In-game Result:**  
 ![Example player screen when running](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/example_playerscreen.png)
 
-# Changelog
-## 2.0
-- Replaced JSON save file to SQLite database (use this to edit data https://sqlitebrowser.org/ )
-- Fixed Issues: 0003
-## 1.3
-- Added Boats support
-## 1.2.3
-- Fixed Issues: 0001, 0002
+---
+
+## Changelog
+
+### 2.0
+- Switched storage from JSON to **SQLite**  
+  → You can edit it with [DB Browser for SQLite](https://sqlitebrowser.org/)
+- Bugfixes: `#0003`
+
+### 1.3
+- **Boats support** added
+
+### 1.2.3
+- Bugfixes: `#0001`, `#0002`
