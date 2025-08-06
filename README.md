@@ -52,9 +52,9 @@ If you use special tags (see below), it will display as a bossbar or title inste
 
 ## Color Formatting
 
-You can use **Minecraft’s default color codes**, prefixed with a **`$`** (dollar sign).
+You can use **Minecraft’s default color codes**, prefixed with a **`$`** (dollar sign) and written in **uppercase**.
 
-Example: `$cWarning!` → displays as red text  
+Example: `$CWarning!` → displays as red text  
 ![Text Formatting](https://github.com/WarterPL/MinecartAnnouncer/blob/main/ReadmeContent/Minecraft_Formatting.webp)
 
 ---
