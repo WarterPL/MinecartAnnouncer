@@ -54,7 +54,7 @@ Place string before pressure plate from direction player will be comming includi
 
 # Changelog
 ## 2.0
-- Replaced JSON save file to SQLite database
+- Replaced JSON save file to SQLite database (use this to edit data https://sqlitebrowser.org/ )
 - Fixed Issues: 0003
 ## 1.3
 - Added Boats support
