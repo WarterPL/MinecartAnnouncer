@@ -1,6 +1,6 @@
 package com.warterpl.minecartannoucer;
 
-import com.warterpl.minecartannoucer.Commands.CommandManager;
+import com.warterpl.minecartannoucer.Commands.Dev_ShowRailMessagesCmdexec;
 import com.warterpl.minecartannoucer.Messages.MessageAssigner;
 import com.warterpl.minecartannoucer.Messages.MessageDisplayer;
 import com.warterpl.minecartannoucer.VehicleHanlders.BoatHandler;
@@ -130,6 +130,9 @@ public class MinecartAnnouncer extends JavaPlugin implements Listener {
         dbHandler.Connect();
         dbHandler.SetupTable();
         msgBlocks = dbHandler.GetAllAssignedBlocks();
+
+        this.getCommand("dev_showRailMessages").setExecutor(new Dev_ShowRailMessagesCmdexec());
+        
 
         getServer().getPluginManager().registerEvents(this, this);
     }

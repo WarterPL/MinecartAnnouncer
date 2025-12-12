@@ -6,3 +6,4 @@ commands:
   dev_showRailMessages:
     description: Can display messages while traveling via minecart
     usage: showRailMessages
+    permission: minecartannouncer.dev
