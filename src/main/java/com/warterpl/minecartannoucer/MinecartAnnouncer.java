@@ -102,11 +102,6 @@ public class MinecartAnnouncer extends JavaPlugin implements Listener {
             MessageAssigner.RemoveMessage(block, event);
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        return CommandManager.Run(sender, command, label, args);
-    }
-
     @EventHandler
     public void onVehicleDestroy(VehicleDestroyEvent event) {
         vehicleHandlers.remove(event.getVehicle().getUniqueId());
@@ -132,7 +127,7 @@ public class MinecartAnnouncer extends JavaPlugin implements Listener {
         msgBlocks = dbHandler.GetAllAssignedBlocks();
 
         this.getCommand("dev_showRailMessages").setExecutor(new Dev_ShowRailMessagesCmdexec());
-        
+
 
         getServer().getPluginManager().registerEvents(this, this);
     }
