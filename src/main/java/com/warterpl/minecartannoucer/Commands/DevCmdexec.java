@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Dev_ShowRailMessagesCmdexec
+public class DevCmdexec
         implements CommandExecutor {
 
     @Override

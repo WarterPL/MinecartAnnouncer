@@ -1,6 +1,6 @@
 package com.warterpl.minecartannoucer;
 
-import com.warterpl.minecartannoucer.Commands.Dev_ShowRailMessagesCmdexec;
+import com.warterpl.minecartannoucer.Commands.DevCmdexec;
 import com.warterpl.minecartannoucer.Messages.MessageAssigner;
 import com.warterpl.minecartannoucer.Messages.MessageDisplayer;
 import com.warterpl.minecartannoucer.VehicleHanlders.BoatHandler;
@@ -9,8 +9,6 @@ import com.warterpl.minecartannoucer.VehicleHanlders.MinecartHandler;
 import com.warterpl.minecartannoucer.VehicleHanlders.VehicleHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -126,8 +124,7 @@ public class MinecartAnnouncer extends JavaPlugin implements Listener {
         dbHandler.SetupTable();
         msgBlocks = dbHandler.GetAllAssignedBlocks();
 
-        this.getCommand("dev_showRailMessages").setExecutor(new Dev_ShowRailMessagesCmdexec());
-
+        this.getCommand("dev_showRailMessages").setExecutor(new DevCmdexec());
 
         getServer().getPluginManager().registerEvents(this, this);
     }
